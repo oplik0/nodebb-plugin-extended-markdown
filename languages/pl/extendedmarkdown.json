@@ -1,0 +1,22 @@
+{
+    "groupedcode_firstlang": "java",
+    "groupedcode_secondlang": "kotlin",
+    "bubbleinfo_text": "tekst informacyjny",
+    "textheader_anchor": "kotwica",
+    "textheader_title": "tytuł",
+    "color_text": "kolorowy tekst",
+    "align_left": "Akapit wyrównany do lewej",
+    "align_right": "Akapit wyrównany do prawej",
+    "align_center": "Wyśrodkowany akapit",
+    "align_justify": "Wyjustowany akapit",
+    "spoiler": "spoiler",
+    "composer.formatting.textheader": "Nagłówek",
+    "composer.formatting.groupedcode": "Grupowany kod",
+    "composer.formatting.bubbleinfo": "Bańka informacyjna",
+    "composer.formatting.color": "Kolor",
+    "composer.formatting.left": "Wyrównaj do lewej",
+    "composer.formatting.center": "Wyśrodkuj",
+    "composer.formatting.right": "Wyrównaj do prawej",
+    "composer.formatting.justify": "Wyjustuj",
+    "composer.formatting.spoiler": "Spoiler"
+}
