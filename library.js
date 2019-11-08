@@ -2,18 +2,18 @@
 
 const utils = require.main.require('./src/utils');
 
-const textHeaderRegex = /<p>#([a-zA-Z0-9-]*)\((.*)\)<\/p>/g;
-const tooltipRegex = /(<code.*>*?[^]<\/code>)|°(.*)°\((.*)\)/g;
+const textHeaderRegex = /<p[^>]*>#([a-zA-Z0-9-]*)\((.*)\)<\/p>/g;
+const tooltipRegex = /(<code[^>]*>*?^<\/code>)|°(.*)°\((.*)\)/g;
 
-const codeTabRegex = /(?:<p>={3}group<\/p>\n)((?:<pre><code class=".+">[^]*?<\/code><\/pre>\n){2,})(?:<p>={3}<\/p>)/g;
+const codeTabRegex = /(?:<p[^>]*>={3}group<\/p>\n)((?:<pre><code class=".+">[^]*?<\/code><\/pre>\n){2,})(?:<p>={3}<\/p>)/g;
 const langCodeRegex = /<code class="(.+)">/;
 
-const colorRegex = /(<code.*>*?[^]<\/code>)|%\((#[\dA-Fa-f]{6}|rgb\(\d{1,3}, ?\d{1,3}, ?\d{1,3}\)|[a-z]+)\)\[(.+?)]/g;
+const colorRegex = /(<code[^>]*>*?^<\/code>)|%\((#[\dA-Fa-f]{6}|rgb\(\d{1,3}, ?\d{1,3}, ?\d{1,3}\)|[a-z]+)\)\[(.+?)]/g;
 
-const paragraphAndHeadingRegex = /<(h[1-6]|p)>([^]*?)<\/(?:h[1-6]|p)>/g;
-const noteRegex = /<p>!!! (info|warning|important) \[([a-zA-Z0-9]*)\]: ((.|<br \/>\n)*)<\/p>/g;
+const paragraphAndHeadingRegex = /<(h[1-6]|p)[^>]*>([^]*?)<\/(?:h[1-6]|p)>/g;
+const noteRegex = /<p[^>]*>!!! (info|warning|important) \[([a-zA-Z0-9]*)\]: ((.|<br \/>\n)*)<\/p>/g;
 
-const spoilerRegex = /(?:<p>)(?:\|\|)([^]*?)(?:\|\|)(?:<\/p>)/g;
+const spoilerRegex = /(?:<p[^>]*>|)(?:\|\|)(.*?)(?:\|\|)(?:<\/p>|<br \/>|\n|)/g;
 
 const noteIcons = {
     info: 'fa-info-circle',
@@ -62,7 +62,7 @@ const ExtendedMarkdown = {
             {name: "right", className: "fa fa-align-right", title: "[[extendedmarkdown:composer.formatting.right]]"},
             {name: "justify", className: "fa fa-align-justify", title: "[[extendedmarkdown:composer.formatting.justify]]"},
             {name: "textheader", className: "fa fa-header", title: "[[extendedmarkdown:composer.formatting.textheader]]"},
-            {name: "groupedcode", className: "fa fa-file-code-o", title: "[[extendedmarkdown:composer.formatting.groupedcode]]"},
+            //{name: "groupedcode", className: "fa fa-file-code-o", title: "[[extendedmarkdown:composer.formatting.groupedcode]]"},
             {name: "bubbleinfo", className: "fa fa-info-circle", title: "[[extendedmarkdown:composer.formatting.bubbleinfo]]"},
             {name: "spoiler", className: "fa fa-eye-slash", title: "[[extendedmarkdown:composer.formatting.spoiler]]"}
         ];
@@ -79,13 +79,6 @@ function applyExtendedMarkdown(textContent) {
             return `<div class="admonition ${type.toLowerCase()}"><p class="admonition-title"><i class="fa ${noteIcons[type.toLowerCase()]}"></i>${title}</p><p>${text}</p></div>`;
         });
     }
-
-    if (textContent.match(textHeaderRegex)) {
-        textContent = textContent.replace(textHeaderRegex, function (match, anchorId, text) {
-            return `<h2 class="text-header"><a class="anchor-offset" name="${anchorId}"></a>${text}</h2>`;
-        });
-    }
-
     if (textContent.match(tooltipRegex)) {
         textContent = textContent.replace(tooltipRegex, function (match, code, text, tooltipText) {
             if (typeof (code) !== "undefined") {
@@ -97,7 +90,6 @@ function applyExtendedMarkdown(textContent) {
             }
         });
     }
-
     if (textContent.match(colorRegex)) {
         textContent = textContent.replace(colorRegex, function (match, code, color, text) {
             if (typeof (code) !== "undefined") {
@@ -106,7 +98,6 @@ function applyExtendedMarkdown(textContent) {
             return `<span style="color: ${color};">${text}</span>`;
         });
     }
-
     if (textContent.match(paragraphAndHeadingRegex)) {
         textContent = textContent.replace(paragraphAndHeadingRegex, function (match, tag, text) {
             let hasStartPattern = text.startsWith("|-");
@@ -124,7 +115,11 @@ function applyExtendedMarkdown(textContent) {
             return `<${tag}>${anchor}${text}</${tag}>`;
         });
     }
-
+    if (textContent.match(textHeaderRegex)) {
+        textContent = textContent.replace(textHeaderRegex, function (match, anchorId, text) {
+            return `<h2 class="text-header"><a class="anchor-offset" name="${anchorId}"></a>${text}</h2>`;
+        });
+    }
     return textContent;
 }
 
