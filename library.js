@@ -13,7 +13,7 @@ const colorRegex = /(<code[^>]*>*?^<\/code>)|%\((#[\dA-Fa-f]{6}|rgb\(\d{1,3}, ?\
 const paragraphAndHeadingRegex = /<(h[1-6]|p)[^>]*>([^]*?)<\/(?:h[1-6]|p)>/g;
 const noteRegex = /<p[^>]*>!!! (info|warning|important) \[([a-zA-Z0-9]*)\]: ((.|<br \/>\n)*)<\/p>/g;
 
-const spoilerRegex = /(?:<p[^>]*>|)(?:\|\|)(.*?)(?:\|\|)(?:<\/p>|<br \/>|\n|)/g;
+const spoilerRegex = /(?:<p dir="auto">)(?:\|\|)(?:<\/p>)?([^]*?)(?:<p dir="auto">)?(?:\|\|)(?:<\/p>)?/g;
 
 const noteIcons = {
     info: 'fa-info-circle',
